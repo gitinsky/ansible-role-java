@@ -27,5 +27,10 @@
 - name: Set license as accepted
   debconf: name='oracle-java{{ java_installer_version }}-installer' question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
 
-- name: install java {{ java_installer_version }}
-  apt: name=oracle-java{{ java_installer_version }}-installer
+- name: install java {{ java_installer_version }} and setup variables
+  apt: name={{ item }}
+  with_items:
+      - "oracle-java{{ java_installer_version }}-installer"
+      - "oracle-java{{ java_installer_version }}-set-default"
+
+  
