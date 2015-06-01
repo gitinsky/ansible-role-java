@@ -4,7 +4,7 @@ Installs java from ppa:webupd8team, this role requires license acception (unlike
 
 ## Variables
 
-Here're the variables and there default values:
+Here're the variables and their default values:
 
 ```yaml
 java_installer_version: 8
