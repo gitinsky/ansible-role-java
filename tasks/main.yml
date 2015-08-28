@@ -1,6 +1,12 @@
 - name: add java ppa repo
   apt_repository: repo=ppa:webupd8team/java state=present update_cache=yes
 
+- name: apt-get update
+  apt:
+    update_cache: yes
+    cache_valid_time: 300
+  ignore_errors: True
+
 - name: Change oracle license is already accepted
   shell: debconf-get-selections |grep "oracle-java8-installer\sshared/accepted-oracle-license-v1-1\sboolean\strue"
   register: result
@@ -28,7 +34,7 @@
   debconf: name='oracle-java{{ java_installer_version }}-installer' question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
 
 - name: install java {{ java_installer_version }} and setup variables
-  apt: name={{ item }}
+  apt: name={{ item }} state=latest
   with_items:
       - "oracle-java{{ java_installer_version }}-installer"
       - "oracle-java{{ java_installer_version }}-set-default"
