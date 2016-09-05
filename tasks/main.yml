@@ -7,6 +7,9 @@
     cache_valid_time: 3600
   ignore_errors: True
 
+- name: install debconf-utils
+  apt: name=debconf-utils state=present
+
 - name: Change oracle license is already accepted
   shell: debconf-get-selections |grep "oracle-java{{ java_installer_version }}-installer\sshared/accepted-oracle-license-v1-1\sboolean\strue"
   register: result
