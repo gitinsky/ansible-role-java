@@ -1,45 +1,12 @@
-- name: add java ppa repo
-  apt_repository: repo=ppa:webupd8team/java state=present update_cache=yes
-
 - name: apt-get update
   apt:
     update_cache: yes
     cache_valid_time: 3600
   ignore_errors: True
 
-- name: install debconf-utils
-  apt: name=debconf-utils state=present
-
-- name: Change oracle license is already accepted
-  shell: debconf-get-selections |grep "oracle-java{{ java_installer_version }}-installer\sshared/accepted-oracle-license-v1-1\sboolean\strue"
-  register: result
-  failed_when: false
-  changed_when: result.rc != 0
-
-- name: Oracle Binary Code License Agreement for the Java SE Platform Products and JavaFX
-  pause: prompt="You MUST agree to the license available in http://java.com/license if you want to use Oracle JDK. [ok]"
-  when: result.changed and i_do_accept_oracle_binary_code_license_agreement_for_the_java_se_platform_products_and_javafx_please_skip_the_prompt == false
-
-- name: In order to install this package, you must accept the license terms, the "Oracle Binary Code License Agreement for the Java SE Platform Products and JavaFX ". Not accepting will cancel the installation.
-  pause: prompt="Do you accept the Oracle Binary Code license terms? [yes/no]"
-  register: java_license_prompt
-  until: java_license_prompt.user_input == 'yes' or java_license_prompt.user_input == 'no'
-  retries: 10
-  delay: 0
-  when: result.changed and i_do_accept_oracle_binary_code_license_agreement_for_the_java_se_platform_products_and_javafx_please_skip_the_prompt == false
-
-- name: Verify acception of license agreement
-  fail: msg='Declined "Oracle Binary Code License for Java"'
-  when: result.changed and i_do_accept_oracle_binary_code_license_agreement_for_the_java_se_platform_products_and_javafx_please_skip_the_prompt == false
-        and java_license_prompt.user_input != 'yes'
-
-- name: Set license as accepted
-  debconf: name='oracle-java{{ java_installer_version }}-installer' question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
-
 - name: install java {{ java_installer_version }} and setup variables
   apt: name={{ item }} state=latest
   with_items:
-      - "oracle-java{{ java_installer_version }}-installer"
-      - "oracle-java{{ java_installer_version }}-set-default"
+      - "openjdk-{{ java_installer_version }}-jdk"
 
   
