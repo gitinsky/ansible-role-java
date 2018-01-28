@@ -3,10 +3,14 @@
     update_cache: yes
     cache_valid_time: 3600
   ignore_errors: True
+  when: not install_zulu
 
 - name: install java {{ java_installer_version }} and setup variables
   apt: name={{ item }} state=latest
   with_items:
       - "openjdk-{{ java_installer_version }}-jdk"
+  when: not install_zulu
 
-  
+- name: install zulu
+  apt: deb=http://cdn.azul.com/zulu/bin/zulu{{ zulu_version }}-linux_amd64.deb
+  when: install_zulu
