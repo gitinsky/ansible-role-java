@@ -1,5 +1,5 @@
 ---
 java_installer_version: 8
 i_do_accept_oracle_binary_code_license_agreement_for_the_java_se_platform_products_and_javafx_please_skip_the_prompt: no
-zulu_version: 8.30.0.1-jdk8.0.172
+zulu_version: 8.31.0.1-jdk8.0.181
 install_zulu: false
