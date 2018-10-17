@@ -3,7 +3,6 @@
     update_cache: yes
     cache_valid_time: 3600
   ignore_errors: True
-  when: not install_zulu
 
 - name: install java {{ java_installer_version }} and setup variables
   apt: name={{ item }} state=latest
