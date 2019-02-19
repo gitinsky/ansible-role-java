@@ -5,7 +5,7 @@
   ignore_errors: True
 
 - name: install java {{ java_installer_version }} and setup variables
-  apt: name={{ item }} state=latest
+  apt: name={{ item }} state=present
   with_items:
       - "openjdk-{{ java_installer_version }}-jdk"
   when: not install_zulu
